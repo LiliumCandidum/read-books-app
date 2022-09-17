@@ -10,6 +10,7 @@
     <string name="date_end">Date End</string>
     <string name="vote">Vote</string>
     <string name="review">Review</string>
+    <string name="review_hint">Insert a review...</string>
     <string name="save">Save</string>
 
     <string name="saving_error">An error occured while saving</string>

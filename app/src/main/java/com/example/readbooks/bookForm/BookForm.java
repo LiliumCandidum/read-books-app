@@ -68,6 +68,7 @@ public class BookForm extends AppCompatActivity {
     }
 
     private void fillFields() {
+        // TODO change with placeholder in strings.xml
         formTitle.setText(getString(R.string.book_edit_form_title) + " " + book.getTitle());
 
         titleField.setText(book.getTitle());
@@ -97,34 +98,28 @@ public class BookForm extends AppCompatActivity {
         reviewField = (EditText) findViewById(R.id.reviewText);
 
         voteRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-        voteRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                switch(checkedId) {
-                    case R.id.buttonVote1: book.setVote(1); break;
-                    case R.id.buttonVote2:  book.setVote(2); break;
-                    case R.id.buttonVote3:  book.setVote(3); break;
-                    case R.id.buttonVote4:  book.setVote(4); break;
-                    case R.id.buttonVote5:  book.setVote(5);
-                }
+        voteRadioGroup.setOnCheckedChangeListener((RadioGroup radioGroup, int checkedId) -> {
+            switch(checkedId) {
+                case R.id.buttonVote1: book.setVote(1); break;
+                case R.id.buttonVote2:  book.setVote(2); break;
+                case R.id.buttonVote3:  book.setVote(3); break;
+                case R.id.buttonVote4:  book.setVote(4); break;
+                case R.id.buttonVote5:  book.setVote(5);
             }
         });
     }
 
     private void initDatePickerDialog() {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                String date = makeDateString(day, month, year);
-                if(datePickerClicked == "start") {
-                    dateStartPickerButton.setText(date);
-                    book.setDateStart(day, month, year);
-                } else if(datePickerClicked == "end") {
-                    dateEndPickerButton.setText(date);
-                    book.setDateEnd(day, month, year);
-                }
-                datePickerClicked = "";
+        DatePickerDialog.OnDateSetListener dateSetListener = (DatePicker datePicker, int year, int month, int day) -> {
+            String date = makeDateString(day, month, year);
+            if(datePickerClicked.equals("start")) {
+                dateStartPickerButton.setText(date);
+                book.setDateStart(day, month, year);
+            } else if(datePickerClicked.equals("end")) {
+                dateEndPickerButton.setText(date);
+                book.setDateEnd(day, month, year);
             }
+            datePickerClicked = "";
         };
 
         Calendar cal = Calendar.getInstance();
@@ -138,19 +133,16 @@ public class BookForm extends AppCompatActivity {
     }
 
     public void saveBook(View view) {
-        // controlla campi
+        // TODO check fields
         book.setTitle(titleField.getText().toString());
         book.setAuthor(authorField.getText().toString());
         book.setReview(reviewField.getText().toString());
 
-        databaseReference.child(book.getKey()).setValue(book).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()) {
-                    BookForm.super.onBackPressed();
-                } else {
-                    Toast.makeText(BookForm.this, getString(R.string.saving_error), Toast.LENGTH_LONG).show();
-                }
+        databaseReference.child(book.getKey()).setValue(book).addOnCompleteListener((Task<Void> task) -> {
+            if(task.isSuccessful()) {
+                BookForm.super.onBackPressed();
+            } else {
+                Toast.makeText(BookForm.this, getString(R.string.saving_error), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -174,11 +166,11 @@ public class BookForm extends AppCompatActivity {
     }
 
     private String makeDateString(int day, int month, int year) {
-        Log.i("", "makeDateString: " +  day + " " + getMonthFormat(month) + " " + year);
        return day + " " + getMonthFormat(month) + " " + year;
     }
 
     private String getMonthFormat(int month) {
+        // TODO add strings to strings.xml
         switch (month) {
             case 0: return "JAN";
             case 1: return "FEB";
