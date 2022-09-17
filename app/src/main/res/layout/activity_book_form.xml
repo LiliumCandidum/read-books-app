@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".bookForm.BookForm"
+    android:layout_margin="25dp">
+
+    <TextView
+        android:id="@+id/formTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="25dp"/>
+
+    <ImageButton
+        android:id="@+id/bookPicture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="#00ffffff"
+        android:src="@android:drawable/btn_plus"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/formTitle" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/bookPicture"
+        app:layout_constraintTop_toBottomOf="@id/formTitle"
+        android:gravity="center_vertical">
+
+        <EditText
+            android:id="@+id/titleText"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="15dp"
+            android:hint="@string/title"
+            android:inputType="text"
+            android:padding="0dp"/>
+
+        <EditText
+            android:id="@+id/authorText"
+            android:layout_width="200dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:padding="0dp"
+            android:inputType="text"
+            android:hint="@string/author"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/dateStartText"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"
+        android:textSize="20dp"
+        android:text="@string/date_start"/>
+    <Button
+        android:id="@+id/dateStartPicker"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"
+        app:layout_constraintLeft_toRightOf="@id/dateStartText"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/black"
+        style="?android:spinnerStyle"
+        android:textSize="20dp"
+        android:onClick="openDateStartPicker"/>
+
+    <TextView
+        android:id="@+id/dateEndText"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateStartText"
+        android:textSize="20dp"
+        android:text="@string/date_end"/>
+    <Button
+        android:id="@+id/dateEndPicker"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/dateStartPicker"
+        app:layout_constraintLeft_toRightOf="@id/dateEndText"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/black"
+        style="?android:spinnerStyle"
+        android:textSize="20dp"
+        android:onClick="openDateEndPicker"/>
+
+    <TextView
+        android:id="@+id/voteText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateEndText"
+        android:textSize="20dp"
+        android:text="@string/vote"/>
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="6dp"
+        android:layout_marginLeft="15dp"
+        app:layout_constraintLeft_toRightOf="@id/voteText"
+        app:layout_constraintTop_toBottomOf="@id/dateEndText">
+        <RadioButton
+            android:id="@+id/buttonVote1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"/>
+        <RadioButton
+            android:id="@+id/buttonVote2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"/>
+        <RadioButton
+            android:id="@+id/buttonVote3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"/>
+        <RadioButton
+            android:id="@+id/buttonVote4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4"/>
+        <RadioButton
+            android:id="@+id/buttonVote5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5"/>
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/reviewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/voteText"
+        android:textSize="20dp"
+        android:text="@string/review"/>
+    <EditText
+        android:id="@+id/reviewText"
+        android:layout_width="300dp"
+        android:layout_height="250dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reviewTitle"
+        android:inputType="textMultiLine"
+        android:gravity="top"
+        android:hint="Insert a review..."/>
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/reviewText"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="@string/save"
+        android:onClick="saveBook"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/buttonVote1"-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="30dp"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:src="@android:drawable/btn_star"-->
+<!--        app:layout_constraintLeft_toRightOf="@id/voteText"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/dateEndText"-->
+<!--        android:background="#00ffffff" />-->

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">ReadBooks</string>
+
+    <!-- Book form -->
+    <string name="book_new_form_title">Insert a new Book</string>
+    <string name="book_edit_form_title">Edit </string>
+    <string name="title">Title</string>
+    <string name="author">Author</string>
+    <string name="date_start">Date Start</string>
+    <string name="date_end">Date End</string>
+    <string name="vote">Vote</string>
+    <string name="review">Review</string>
+    <string name="save">Save</string>
+
+    <string name="saving_error">An error occured while saving</string>
+</resources>
