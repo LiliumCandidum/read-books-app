@@ -68,9 +68,7 @@ public class BookForm extends AppCompatActivity {
     }
 
     private void fillFields() {
-        // TODO change with placeholder in strings.xml
-        formTitle.setText(getString(R.string.book_edit_form_title) + " " + book.getTitle());
-
+        formTitle.setText(book.getTitle());
         titleField.setText(book.getTitle());
         authorField.setText(book.getAuthor());
         reviewField.setText(book.getReview());
@@ -93,9 +91,9 @@ public class BookForm extends AppCompatActivity {
         dateStartPickerButton = (Button) findViewById(R.id.dateStartPicker);
         dateEndPickerButton = (Button) findViewById(R.id.dateEndPicker);
 
-        titleField = (EditText) findViewById(R.id.titleText);
-        authorField = (EditText) findViewById(R.id.authorText);
-        reviewField = (EditText) findViewById(R.id.reviewText);
+        titleField = (EditText) findViewById(R.id.titleInput);
+        authorField = (EditText) findViewById(R.id.authorInput);
+        reviewField = (EditText) findViewById(R.id.reviewInput);
 
         voteRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         voteRadioGroup.setOnCheckedChangeListener((RadioGroup radioGroup, int checkedId) -> {

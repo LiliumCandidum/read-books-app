@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class BooksListActivity extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
     private ListView listView;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_books_list);
 
         final ArrayList<Book> list = new ArrayList<>();
         final MyListAdapter adapter = new MyListAdapter(this, list);
@@ -72,13 +72,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openEditForm(Book book) {
-        Intent intent = new Intent(MainActivity.this, BookForm.class);
+        Intent intent = new Intent(BooksListActivity.this, BookForm.class);
         intent.putExtra("book", book);
         startActivity(intent);
     }
 
     public void openNewForm(View view) {
-        Intent intent = new Intent(MainActivity.this, BookForm.class);
+        Intent intent = new Intent(BooksListActivity.this, BookForm.class);
         startActivity(intent);
     }
 }
