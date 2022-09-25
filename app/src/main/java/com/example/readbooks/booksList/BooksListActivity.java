@@ -3,6 +3,9 @@ package com.example.readbooks.booksList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,13 +63,37 @@ public class BooksListActivity extends AppCompatActivity {
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Book book = list.get(position);
-                Log.i("BooksListFragment", "book cliccato: " + book.getAuthor());
+        listView.setOnItemClickListener((AdapterView<?> adapterView, View view, int position, long l) -> {
+            Book book = list.get(position);
+            openEditForm(book);
+        });
 
-                openEditForm(book);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> arg0, View v, int position, long l) {
+                Book book = list.get(position);
+
+                // TODO: fai stringhe strings.xml
+                AlertDialog alertDialog = new AlertDialog.Builder(BooksListActivity.this).create(); //Read Update
+                alertDialog.setTitle("Delete");
+                alertDialog.setMessage("Delete \"" + book.getTitle() + "\" book?");
+
+                // TODO: non vedo differenza tra positive e negative button
+                alertDialog.setButton(Dialog.BUTTON_POSITIVE,"DELETE", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+                alertDialog.setButton(Dialog.BUTTON_NEGATIVE,"CANCEL", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+
+                alertDialog.show();
+                return true;
             }
         });
     }

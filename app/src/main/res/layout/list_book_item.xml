@@ -4,7 +4,8 @@
     android:layout_width="60dp"
     android:layout_height="60dp"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="15dp"
+    android:longClickable="true">
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/item_list_title"
         android:layout_height="wrap_content"

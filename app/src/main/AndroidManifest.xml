@@ -11,18 +11,18 @@
         android:theme="@style/Theme.ReadBooks">
         <activity
             android:name=".login.LoginActivity"
-            android:exported="true"/>
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".bookForm.BookForm"
             android:exported="true" />
         <activity
             android:name=".booksList.BooksListActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
