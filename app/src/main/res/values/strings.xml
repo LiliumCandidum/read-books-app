@@ -18,7 +18,16 @@
     <string name="review_hint">Insert a review...</string>
     <string name="save">Save</string>
 
+    <!-- Delete dialog -->
+    <string name="delete_dialog_title">Delete</string>
+    <string name="delete_dialog_content">Delete %1$s book?</string>
+    <string name="delete_dialog_btn_delete">DELETE</string>
+    <string name="delete_dialog_btn_cancel">CANCEL</string>
+
+    <!-- Toasts -->
     <string name="saving_error">An error occured while saving</string>
     <string name="login_success">Logged in successfully</string>
     <string name="login_error">Email or password are wrong</string>
+    <string name="delete_success">Deleted successfully</string>
+    <string name="delete_error">An error occured while deleting</string>
 </resources>

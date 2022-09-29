@@ -12,10 +12,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.readbooks.R;
 import com.example.readbooks.bookForm.BookForm;
+import com.example.readbooks.login.LoginActivity;
 import com.example.readbooks.models.Book;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,7 +44,8 @@ public class BooksListActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         // TODO sistema e sistema anche in book form
-        databaseReference = FirebaseDatabase.getInstance("https://read-books-908e8-default-rtdb.europe-west1.firebasedatabase.app").getReference("books");
+        databaseReference = FirebaseDatabase
+                .getInstance("https://read-books-908e8-default-rtdb.europe-west1.firebasedatabase.app").getReference("books");
         // TODO togliere listener on destroy?
         this.databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -73,29 +77,34 @@ public class BooksListActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> arg0, View v, int position, long l) {
                 Book book = list.get(position);
 
-                // TODO: fai stringhe strings.xml
                 AlertDialog alertDialog = new AlertDialog.Builder(BooksListActivity.this).create(); //Read Update
-                alertDialog.setTitle("Delete");
-                alertDialog.setMessage("Delete \"" + book.getTitle() + "\" book?");
+                alertDialog.setTitle(getText(R.string.delete_dialog_title));
+                // TODO: approfondisci questo get resources, si può usare altro?
+                alertDialog.setMessage(getResources().getString(R.string.delete_dialog_content, book.getTitle()));
 
-                // TODO: non vedo differenza tra positive e negative button
-                alertDialog.setButton(Dialog.BUTTON_POSITIVE,"DELETE", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
+                alertDialog.setButton(Dialog.BUTTON_POSITIVE, getText(R.string.delete_dialog_btn_delete), (DialogInterface dialog, int which) -> {
+                    deleteItem(book);
+                    finish();
                 });
-                alertDialog.setButton(Dialog.BUTTON_NEGATIVE,"CANCEL", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
+                alertDialog.setButton(Dialog.BUTTON_NEGATIVE, getText(R.string.delete_dialog_btn_cancel),
+                        (DialogInterface dialog, int which) -> finish());
 
                 alertDialog.show();
                 return true;
             }
         });
+    }
+
+    private void deleteItem(Book book) {
+        // TODO: qualcosa non va qui
+        Log.i("", "PRIMA DEL REMOVE" + databaseReference.child("soefhsodf"));
+        DatabaseReference path = databaseReference.child(book.getKey()).;
+        if(path != null) {
+            path.removeValue().addOnCompleteListener((Task<Void> task) -> {
+                int toastTextId = task.isSuccessful() ? R.string.delete_success : R.string.delete_error;
+                Toast.makeText(BooksListActivity.this, getString(toastTextId), Toast.LENGTH_LONG).show();
+            });
+        }
     }
 
     public void openEditForm(Book book) {
