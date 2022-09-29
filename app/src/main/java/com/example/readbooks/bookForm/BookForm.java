@@ -45,7 +45,6 @@ public class BookForm extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("Book form", "ON CREATE");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_form);
 

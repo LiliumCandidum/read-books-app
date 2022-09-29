@@ -67,13 +67,13 @@ public class BooksListActivity extends AppCompatActivity {
             }
         });
 
+        // TODO: C'E' UN PROBLEMA CON ON CLICK E ON LONG CLICK. ON CLICK NON VA
         listView.setOnItemClickListener((AdapterView<?> adapterView, View view, int position, long l) -> {
             Book book = list.get(position);
             openEditForm(book);
         });
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
             public boolean onItemLongClick(AdapterView<?> arg0, View v, int position, long l) {
                 Book book = list.get(position);
 
@@ -84,10 +84,10 @@ public class BooksListActivity extends AppCompatActivity {
 
                 alertDialog.setButton(Dialog.BUTTON_POSITIVE, getText(R.string.delete_dialog_btn_delete), (DialogInterface dialog, int which) -> {
                     deleteItem(book);
-                    finish();
+                    alertDialog.dismiss();
                 });
                 alertDialog.setButton(Dialog.BUTTON_NEGATIVE, getText(R.string.delete_dialog_btn_cancel),
-                        (DialogInterface dialog, int which) -> finish());
+                        (DialogInterface dialog, int which) -> alertDialog.dismiss());
 
                 alertDialog.show();
                 return true;
@@ -96,15 +96,10 @@ public class BooksListActivity extends AppCompatActivity {
     }
 
     private void deleteItem(Book book) {
-        // TODO: qualcosa non va qui
-        Log.i("", "PRIMA DEL REMOVE" + databaseReference.child("soefhsodf"));
-        DatabaseReference path = databaseReference.child(book.getKey()).;
-        if(path != null) {
-            path.removeValue().addOnCompleteListener((Task<Void> task) -> {
-                int toastTextId = task.isSuccessful() ? R.string.delete_success : R.string.delete_error;
-                Toast.makeText(BooksListActivity.this, getString(toastTextId), Toast.LENGTH_LONG).show();
-            });
-        }
+        databaseReference.child(book.getKey()).removeValue().addOnCompleteListener((Task<Void> task) -> {
+            int toastTextId = task.isSuccessful() ? R.string.delete_success : R.string.delete_error;
+            Toast.makeText(BooksListActivity.this, getString(toastTextId), Toast.LENGTH_LONG).show();
+        });
     }
 
     public void openEditForm(Book book) {
