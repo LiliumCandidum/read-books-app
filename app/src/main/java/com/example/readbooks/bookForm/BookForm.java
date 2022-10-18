@@ -52,15 +52,15 @@ public class BookForm extends AppCompatActivity {
 
         setViews();
 
-        dateStartPickerButton.setText(getTodaysDate());
-        dateEndPickerButton.setText(getTodaysDate());
-
         book = (Book) getIntent().getSerializableExtra("book");
         if(book != null) {
             fillFields();
         } else {
             book = new Book(UUID.randomUUID().toString());
             formTitle.setText(getString(R.string.book_new_form_title));
+
+            dateStartPickerButton.setText(getTodaysDate());
+            dateEndPickerButton.setText(getTodaysDate());
         }
 
         databaseReference = FirebaseDatabase.getInstance("https://read-books-908e8-default-rtdb.europe-west1.firebasedatabase.app").getReference("books");
@@ -71,6 +71,9 @@ public class BookForm extends AppCompatActivity {
         titleField.setText(book.getTitle());
         authorField.setText(book.getAuthor());
         reviewField.setText(book.getReview());
+
+        dateStartPickerButton.setText(book.getDateStart().replaceAll("/", " "));
+        dateEndPickerButton.setText(book.getDateEnd().replaceAll("/", " "));
 
         RadioButton radioButton;
         switch(book.getVote()) {

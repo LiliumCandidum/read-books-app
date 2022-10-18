@@ -32,18 +32,6 @@ public class Book implements Serializable {
         return this.title + " - " + this.author;
     }
 
-//    /**
-//     * Converts a date in string type to CustomDate type
-//     * @param date expected a date such as "dd/mm/yyyy"
-//     */
-//    public CustomDate dbStringToDate(String date) {
-//        String[] splitted = date.split("/");
-//        int day = Integer.parseInt(splitted[0]);
-//        int month = Integer.parseInt(splitted[1]);
-//        int year = Integer.parseInt(splitted[2]);
-//        return new CustomDate(day, month, year);
-//    }
-
     public String getKey() {
         return this.key;
     }

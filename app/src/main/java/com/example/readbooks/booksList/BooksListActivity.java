@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -47,7 +48,7 @@ public class BooksListActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase
                 .getInstance("https://read-books-908e8-default-rtdb.europe-west1.firebasedatabase.app").getReference("books");
         // TODO togliere listener on destroy?
-        this.databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 list.clear();
@@ -67,14 +68,9 @@ public class BooksListActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: C'E' UN PROBLEMA CON ON CLICK E ON LONG CLICK. ON CLICK NON VA
-        listView.setOnItemClickListener((AdapterView<?> adapterView, View view, int position, long l) -> {
-            Book book = list.get(position);
-            openEditForm(book);
-        });
-
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> arg0, View v, int position, long l) {
+                Log.i("", "Sono nel on LONG click listener");
                 Book book = list.get(position);
 
                 AlertDialog alertDialog = new AlertDialog.Builder(BooksListActivity.this).create(); //Read Update
@@ -90,22 +86,16 @@ public class BooksListActivity extends AppCompatActivity {
                         (DialogInterface dialog, int which) -> alertDialog.dismiss());
 
                 alertDialog.show();
-                return true;
+                return false;
             }
         });
     }
 
-    private void deleteItem(Book book) {
+    public void deleteItem(Book book) {
         databaseReference.child(book.getKey()).removeValue().addOnCompleteListener((Task<Void> task) -> {
             int toastTextId = task.isSuccessful() ? R.string.delete_success : R.string.delete_error;
             Toast.makeText(BooksListActivity.this, getString(toastTextId), Toast.LENGTH_LONG).show();
         });
-    }
-
-    public void openEditForm(Book book) {
-        Intent intent = new Intent(BooksListActivity.this, BookForm.class);
-        intent.putExtra("book", book);
-        startActivity(intent);
     }
 
     public void openNewForm(View view) {
