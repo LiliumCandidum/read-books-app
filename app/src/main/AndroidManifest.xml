@@ -19,7 +19,11 @@
         </activity>
         <activity
             android:name=".bookForm.BookForm"
-            android:exported="true" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.IMAGE_CAPTURE"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".booksList.BooksListActivity"
             android:exported="true">

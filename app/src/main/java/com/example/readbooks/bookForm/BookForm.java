@@ -1,33 +1,40 @@
 package com.example.readbooks.bookForm;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.readbooks.R;
 import com.example.readbooks.models.Book;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
 import java.util.UUID;
 
-import java.util.Calendar;
-
 public class BookForm extends AppCompatActivity {
+    ActivityResultLauncher<Intent> cameraActivityResult;
+
     private DatePickerDialog datePickerDialog;
     private Button dateStartPickerButton;
     private Button dateEndPickerButton;
@@ -39,6 +46,7 @@ public class BookForm extends AppCompatActivity {
     private EditText authorField;
     private EditText reviewField;
     private RadioGroup voteRadioGroup;
+    private ImageView pictureView;
 
     private Book book;
     private DatabaseReference databaseReference;
@@ -64,6 +72,21 @@ public class BookForm extends AppCompatActivity {
         }
 
         databaseReference = FirebaseDatabase.getInstance("https://read-books-908e8-default-rtdb.europe-west1.firebasedatabase.app").getReference("books");
+
+        cameraActivityResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+//                        Bitmap photo = (Bitmap)data.getExtras().get("data");
+//                        Intent data = result.getData().getExtras();
+                        // TODO non so se va
+                        Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
+                        pictureView.setImageBitmap(photo);
+                    }
+                }
+            });
     }
 
     private void fillFields() {
@@ -107,6 +130,8 @@ public class BookForm extends AppCompatActivity {
                 case R.id.buttonVote5:  book.setVote(5);
             }
         });
+
+        pictureView = findViewById(R.id.bookPicture);
     }
 
     private void initDatePickerDialog() {
@@ -145,6 +170,11 @@ public class BookForm extends AppCompatActivity {
                 Toast.makeText(BookForm.this, getString(R.string.saving_error), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void runCamera(View v) {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraActivityResult.launch(cameraIntent);
     }
 
     public void openDateStartPicker(View view) {
