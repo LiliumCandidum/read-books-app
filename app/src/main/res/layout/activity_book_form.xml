@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".bookForm.BookForm"
-    android:layout_margin="25dp">
+    android:layout_margin="25dp"
+    android:focusable="false"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/formTitle"
@@ -20,166 +26,164 @@
         android:id="@+id/bookPicture"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:padding="1dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/linearLayout"
         app:layout_constraintTop_toBottomOf="@id/formTitle"
-        android:background="@drawable/img_border"
-        android:padding="1dp"/>
+        android:src="@drawable/no_image_icon"/>
     <Button
+        android:id="@+id/addPictureBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/bookPicture"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/linearLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
         android:minHeight="20dp"
         android:minWidth="80dp"
         android:textSize="8sp"
         android:text="Add Photo"
         android:onClick="runCamera"/>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="120dp"
-        android:orientation="vertical"
+
+    <EditText
+        android:id="@+id/titleInput"
+        android:layout_width="230dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/addPictureBtn"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/formTitle">
+        android:textSize="20sp"
+        android:hint="@string/title"
+        android:inputType="text"
+        android:padding="0dp"/>
 
-        <EditText
-            android:id="@+id/titleInput"
-            android:layout_width="230dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="15dp"
-            android:textSize="20sp"
-            android:hint="@string/title"
-            android:inputType="text"
-            android:padding="0dp"/>
+    <EditText
+        android:id="@+id/authorInput"
+        android:layout_width="230dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/titleInput"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:padding="0dp"
+        android:textSize="20sp"
+        android:inputType="text"
+        android:hint="@string/author"/>
 
-        <EditText
-            android:id="@+id/authorInput"
-            android:layout_width="230dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="10dp"
-            android:padding="0dp"
-            android:textSize="20sp"
-            android:inputType="text"
-            android:hint="@string/author"/>
-    </LinearLayout>
+    <TextView
+        android:id="@+id/dateStartText"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/authorInput"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/dateStartPicker"
+        android:textSize="20sp"
+        android:text="@string/date_start"/>
+    <Button
+        android:id="@+id/dateStartPicker"
+        android:layout_height="wrap_content"
+        android:layout_width="170dp"
+        app:layout_constraintTop_toBottomOf="@id/authorInput"
+        app:layout_constraintLeft_toRightOf="@id/dateStartText"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/black"
+        style="?android:spinnerStyle"
+        android:textSize="20sp"
+        android:onClick="openDateStartPicker"/>
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/linearLayout"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent">-->
+    <TextView
+        android:id="@+id/dateEndText"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateStartText"
+        app:layout_constraintRight_toLeftOf="@id/dateEndPicker"
+        android:textSize="20sp"
+        android:text="@string/date_end"/>
+    <Button
+        android:id="@+id/dateEndPicker"
+        android:layout_height="wrap_content"
+        android:layout_width="170dp"
+        app:layout_constraintTop_toBottomOf="@id/dateStartPicker"
+        app:layout_constraintLeft_toRightOf="@id/dateEndText"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="15dp"
+        android:textColor="@color/black"
+        style="?android:spinnerStyle"
+        android:textSize="20sp"
+        android:onClick="openDateEndPicker"/>
 
-        <TextView
-            android:id="@+id/dateStartText"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:textSize="20sp"
-            android:text="@string/date_start"/>
-        <Button
-            android:id="@+id/dateStartPicker"
-            android:layout_height="wrap_content"
-            android:layout_width="170dp"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout"
-            app:layout_constraintLeft_toRightOf="@id/dateStartText"
-            android:layout_marginLeft="15dp"
-            android:textColor="@color/black"
-            style="?android:spinnerStyle"
-            android:textSize="20sp"
-            android:onClick="openDateStartPicker"/>
-
-        <TextView
-            android:id="@+id/dateEndText"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dateStartText"
-            android:textSize="20sp"
-            android:text="@string/date_end"/>
-        <Button
-            android:id="@+id/dateEndPicker"
-            android:layout_height="wrap_content"
-            android:layout_width="170dp"
-            app:layout_constraintTop_toBottomOf="@id/dateStartPicker"
-            app:layout_constraintLeft_toRightOf="@id/dateEndText"
-            android:layout_marginLeft="15dp"
-            android:textColor="@color/black"
-            style="?android:spinnerStyle"
-            android:textSize="20sp"
-            android:onClick="openDateEndPicker"/>
-
-        <TextView
-            android:id="@+id/voteText"
+    <TextView
+        android:id="@+id/voteText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateEndText"
+        app:layout_constraintRight_toLeftOf="@id/radioGroup"
+        android:textSize="20sp"
+        android:text="@string/vote"/>
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="6dp"
+        app:layout_constraintLeft_toRightOf="@id/voteText"
+        app:layout_constraintTop_toBottomOf="@id/dateEndText"
+        app:layout_constraintRight_toRightOf="parent">
+        <RadioButton
+            android:id="@+id/buttonVote1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dateEndText"
-            android:textSize="20sp"
-            android:text="@string/vote"/>
-        <RadioGroup
-            android:id="@+id/radioGroup"
+            android:text="1"/>
+        <RadioButton
+            android:id="@+id/buttonVote2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="6dp"
-            android:layout_marginLeft="15dp"
-            app:layout_constraintLeft_toRightOf="@id/voteText"
-            app:layout_constraintTop_toBottomOf="@id/dateEndText">
-            <RadioButton
-                android:id="@+id/buttonVote1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"/>
-            <RadioButton
-                android:id="@+id/buttonVote2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2"/>
-            <RadioButton
-                android:id="@+id/buttonVote3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3"/>
-            <RadioButton
-                android:id="@+id/buttonVote4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4"/>
-            <RadioButton
-                android:id="@+id/buttonVote5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="5"/>
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/reviewTitle"
+            android:text="2"/>
+        <RadioButton
+            android:id="@+id/buttonVote3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/voteText"
-            android:textSize="20sp"
-            android:text="@string/review"/>
-        <EditText
-            android:id="@+id/reviewInput"
-            android:layout_width="300dp"
-            android:layout_height="250dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/reviewTitle"
-            android:inputType="textMultiLine"
-            android:gravity="top"
-            android:hint="@string/review_hint"/>
+            android:text="3"/>
+        <RadioButton
+            android:id="@+id/buttonVote4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4"/>
+        <RadioButton
+            android:id="@+id/buttonVote5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5"/>
+    </RadioGroup>
 
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+    <TextView
+        android:id="@+id/reviewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/reviewInput"
+        app:layout_constraintTop_toBottomOf="@id/voteText"
+        android:textSize="20sp"
+        android:text="@string/review"/>
+    <EditText
+        android:id="@+id/reviewInput"
+        android:layout_width="300dp"
+        android:layout_height="250dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reviewTitle"
+        app:layout_constraintRight_toRightOf="parent"
+        android:inputType="textMultiLine"
+        android:gravity="top"
+        android:hint="@string/review_hint"/>
 
     <Button
         android:id="@+id/saveButton"
@@ -192,13 +196,4 @@
         android:onClick="saveBook"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--    <ImageButton-->
-<!--        android:id="@+id/buttonVote1"-->
-<!--        android:layout_width="30dp"-->
-<!--        android:layout_height="30dp"-->
-<!--        android:layout_marginTop="15dp"-->
-<!--        android:src="@android:drawable/btn_star"-->
-<!--        app:layout_constraintLeft_toRightOf="@id/voteText"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/dateEndText"-->
-<!--        android:background="#00ffffff" />-->
+</ScrollView>

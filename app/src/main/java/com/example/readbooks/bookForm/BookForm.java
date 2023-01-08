@@ -5,8 +5,11 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -21,18 +24,26 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.readbooks.R;
 import com.example.readbooks.models.Book;
+import com.example.readbooks.models.DatabaseActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.UUID;
 
-public class BookForm extends AppCompatActivity {
+public class BookForm extends DatabaseActivity {
     ActivityResultLauncher<Intent> cameraActivityResult;
 
     private DatePickerDialog datePickerDialog;
@@ -49,7 +60,8 @@ public class BookForm extends AppCompatActivity {
     private ImageView pictureView;
 
     private Book book;
-    private DatabaseReference databaseReference;
+
+    private boolean isPictureChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,32 +77,26 @@ public class BookForm extends AppCompatActivity {
             fillFields();
         } else {
             book = new Book(UUID.randomUUID().toString());
-            formTitle.setText(getString(R.string.book_new_form_title));
-
-            dateStartPickerButton.setText(getTodaysDate());
-            dateEndPickerButton.setText(getTodaysDate());
+            formTitle.setText(getString(R.string.new_form_title));
+            initialiseDates();
         }
-
-        databaseReference = FirebaseDatabase.getInstance("https://read-books-908e8-default-rtdb.europe-west1.firebasedatabase.app").getReference("books");
 
         cameraActivityResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
+                (ActivityResultCallback<ActivityResult>) result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-//                        Bitmap photo = (Bitmap)data.getExtras().get("data");
-//                        Intent data = result.getData().getExtras();
-                        // TODO non so se va
                         Bitmap photo = (Bitmap) result.getData().getExtras().get("data");
                         pictureView.setImageBitmap(photo);
+
+                        isPictureChanged = true;
                     }
-                }
-            });
+                });
     }
 
     private void fillFields() {
-        formTitle.setText(book.getTitle());
+        getPicture(book.getKey());
+
+        formTitle.setText(getString(R.string.edit_form) + " " + book.getTitle());
         titleField.setText(book.getTitle());
         authorField.setText(book.getAuthor());
         reviewField.setText(book.getReview());
@@ -157,19 +163,66 @@ public class BookForm extends AppCompatActivity {
         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
     }
 
-    public void saveBook(View view) {
-        // TODO check fields
-        book.setTitle(titleField.getText().toString());
-        book.setAuthor(authorField.getText().toString());
-        book.setReview(reviewField.getText().toString());
-
-        databaseReference.child(book.getKey()).setValue(book).addOnCompleteListener((Task<Void> task) -> {
-            if(task.isSuccessful()) {
-                BookForm.super.onBackPressed();
-            } else {
-                Toast.makeText(BookForm.this, getString(R.string.saving_error), Toast.LENGTH_LONG).show();
-            }
+    private void getPicture(String book) {
+        StorageReference imgRef = storageRef.child(book + ".jpg");
+        final long ONE_MEGABYTE = 1024 * 1024;
+        imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener((byte[] bytes) -> {
+            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            pictureView.setImageBitmap(bmp);
+        }).addOnFailureListener(exception -> {
+            pictureView.setImageResource(R.drawable.no_image_icon);
         });
+    }
+
+    private void savePicture() {
+        StorageReference imgRef = storageRef.child(book.getKey() + ".jpg");
+        pictureView.setDrawingCacheEnabled(true);
+        pictureView.buildDrawingCache();
+        Bitmap bitmap = pictureView.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = imgRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                openErrorToast(R.string.saving_error);
+            }
+        }).addOnSuccessListener((UploadTask.TaskSnapshot taskSnapshot) -> {
+            // TODO close the loading modal
+            BookForm.super.onBackPressed();
+        });
+    }
+
+    public void saveBook(View view) {
+        String title = titleField.getText().toString();
+        String author = authorField.getText().toString();
+
+        if(title == null || author == null || book.getVote() == 0) {
+            openErrorToast(R.string.saving_empty_field);
+        } else {
+            book.setTitle(title);
+            book.setAuthor(author);
+            book.setReview(reviewField.getText().toString());
+
+            // TODO create and open a loading modal
+            databaseReference.child(book.getKey()).setValue(book).addOnCompleteListener((Task<Void> task) -> {
+                if(task.isSuccessful()) {
+                    if(isPictureChanged) {
+                        savePicture();
+                    } else {
+                        BookForm.super.onBackPressed();
+                    }
+                } else {
+                    openErrorToast(R.string.saving_error_img);
+                }
+            });
+        }
+    }
+
+    private void openErrorToast(int stringResId) {
+        Toast.makeText(BookForm.this, getString(stringResId), Toast.LENGTH_LONG).show();
     }
 
     public void runCamera(View v) {
@@ -187,12 +240,18 @@ public class BookForm extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private String getTodaysDate() {
+    private void initialiseDates() {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
-        return makeDateString(day, month, year);
+
+        String datePickerDate = makeDateString(day, month, year);
+        dateStartPickerButton.setText(datePickerDate);
+        dateEndPickerButton.setText(datePickerDate);
+
+        book.setDateStart(day, month, year);
+        book.setDateEnd(day, month, year);
     }
 
     private String makeDateString(int day, int month, int year) {
@@ -200,20 +259,19 @@ public class BookForm extends AppCompatActivity {
     }
 
     private String getMonthFormat(int month) {
-        // TODO add strings to strings.xml
         switch (month) {
-            case 0: return "JAN";
-            case 1: return "FEB";
-            case 2: return "MAR";
-            case 3: return "APR";
-            case 4: return "MAY";
-            case 5: return "JUN";
-            case 6: return "JUL";
-            case 7: return "AUG";
-            case 8: return "SEP";
-            case 9: return "OCT";
-            case 10: return "NOV";
-            case 11: return "DEC";
+            case 0: return getString(R.string.jan);
+            case 1: return getString(R.string.feb);
+            case 2: return getString(R.string.mar);
+            case 3: return getString(R.string.apr);
+            case 4: return getString(R.string.may);
+            case 5: return getString(R.string.jun);
+            case 6: return getString(R.string.jul);
+            case 7: return getString(R.string.aug);
+            case 8: return getString(R.string.sep);
+            case 9: return getString(R.string.oct);
+            case 10: return getString(R.string.nov);
+            case 11: return getString(R.string.dec);
             default: return "";
         }
     }

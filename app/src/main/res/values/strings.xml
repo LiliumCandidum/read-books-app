@@ -2,13 +2,13 @@
     <string name="app_name">ReadBooks</string>
 
     <!-- Login form -->
-    <string name="app_title">Read Books App</string>
     <string name="login">Login</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
 
     <!-- Book form -->
-    <string name="book_new_form_title">Insert a new Book</string>
+    <string name="new_form_title">Insert a new Book</string>
+    <string name="edit_form">Edit</string>
     <string name="title">Title</string>
     <string name="author">Author</string>
     <string name="date_start">Date Start</string>
@@ -26,8 +26,24 @@
 
     <!-- Toasts -->
     <string name="saving_error">An error occured while saving</string>
+    <string name="saving_error_img">An error occured while saving the image</string>
+    <string name="saving_empty_field">Title, author or vote cannot be empty</string>
     <string name="login_success">Logged in successfully</string>
     <string name="login_error">Email or password are wrong</string>
     <string name="delete_success">Deleted successfully</string>
     <string name="delete_error">An error occured while deleting</string>
+
+    <!-- Months -->
+    <string name="jan">JAN</string>
+    <string name="feb">FEB</string>
+    <string name="mar">MAR</string>
+    <string name="apr">APR</string>
+    <string name="may">MAY</string>
+    <string name="jun">JUN</string>
+    <string name="jul">JUL</string>
+    <string name="aug">AUG</string>
+    <string name="sep">SEP</string>
+    <string name="oct">OCT</string>
+    <string name="nov">NOV</string>
+    <string name="dec">DEC</string>
 </resources>
