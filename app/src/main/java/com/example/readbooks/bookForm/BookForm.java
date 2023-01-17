@@ -101,8 +101,10 @@ public class BookForm extends DatabaseActivity {
         authorField.setText(book.getAuthor());
         reviewField.setText(book.getReview());
 
-        dateStartPickerButton.setText(book.getDateStart().replaceAll("/", " "));
-        dateEndPickerButton.setText(book.getDateEnd().replaceAll("/", " "));
+        String[] dateStart = book.getDateStart().split("/");
+        String[] dateEnd = book.getDateEnd().split("/");
+        dateStartPickerButton.setText(makeDateString(Integer.parseInt(dateStart[0]), Integer.parseInt(dateStart[1]), Integer.parseInt(dateStart[2])));
+        dateEndPickerButton.setText(makeDateString(Integer.parseInt(dateEnd[0]), Integer.parseInt(dateEnd[1]), Integer.parseInt(dateEnd[2])));
 
         RadioButton radioButton;
         switch(book.getVote()) {
@@ -142,6 +144,7 @@ public class BookForm extends DatabaseActivity {
 
     private void initDatePickerDialog() {
         DatePickerDialog.OnDateSetListener dateSetListener = (DatePicker datePicker, int year, int month, int day) -> {
+            Log.i("DatePicker", "DAY SELECTED d " + day + " m " + month + " y " + year);
             String date = makeDateString(day, month, year);
             if(datePickerClicked.equals("start")) {
                 dateStartPickerButton.setText(date);
@@ -212,6 +215,7 @@ public class BookForm extends DatabaseActivity {
                     if(isPictureChanged) {
                         savePicture();
                     } else {
+                        // TODO close the loading modal
                         BookForm.super.onBackPressed();
                     }
                 } else {
@@ -250,8 +254,8 @@ public class BookForm extends DatabaseActivity {
         dateStartPickerButton.setText(datePickerDate);
         dateEndPickerButton.setText(datePickerDate);
 
-        book.setDateStart(day, month, year);
-        book.setDateEnd(day, month, year);
+        book.setDateStart(day, month + 1, year);
+        book.setDateEnd(day, month + 1, year);
     }
 
     private String makeDateString(int day, int month, int year) {

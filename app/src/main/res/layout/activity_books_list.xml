@@ -7,7 +7,7 @@
     tools:context=".booksList.BooksListActivity">
 
     <ListView
-        android:id="@+id/books_list_view"
+        android:id="@+id/booksListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

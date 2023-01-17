@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,11 +29,13 @@ import java.util.ArrayList;
 public class MyListAdapter extends ArrayAdapter<Book> {
     private final Activity context;
     private final ArrayList<Book> books;
+    private ArrayList<Book> originalBooks;
 
     public MyListAdapter(@NonNull Activity context, ArrayList<Book> books) {
         super(context, R.layout.list_book_item, books);
         this.context = context;
         this.books = books;
+        this.originalBooks = books;
     }
 
     @NonNull
@@ -41,13 +44,13 @@ public class MyListAdapter extends ArrayAdapter<Book> {
         LayoutInflater inflater = context.getLayoutInflater();
         View itemListView = inflater.inflate(R.layout.list_book_item, null, true);
 
-        TextView titleText = itemListView.findViewById(R.id.item_list_title);
+        TextView titleText = itemListView.findViewById(R.id.itemListTitle);
         TextView authorText = itemListView.findViewById(R.id.item_list_author);
 
         titleText.setText(books.get(position).getTitle());
         authorText.setText(books.get(position).getAuthor());
 
-        Button editButton = (Button) itemListView.findViewById(R.id.edit_book_btn);
+        Button editButton = (Button) itemListView.findViewById(R.id.editBookBtn);
         editButton.setOnClickListener(view -> {
             Book book = books.get(position);
             openEditForm(book);
