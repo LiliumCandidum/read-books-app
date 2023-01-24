@@ -3,20 +3,24 @@
 
     <!-- Login form -->
     <string name="login">Login</string>
+    <string name="register">Register</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="new_user">Not registered yet? Click here</string>
+    <string name="new_account">Create account</string>
 
     <!-- Book form -->
     <string name="new_form_title">Insert a new Book</string>
-    <string name="edit_form">Edit</string>
+    <string name="edit_form">Edit %1$s</string>
     <string name="title">Title</string>
     <string name="author">Author</string>
     <string name="date_start">Date Start</string>
     <string name="date_end">Date End</string>
     <string name="vote">Vote</string>
     <string name="review">Review</string>
-    <string name="review_hint">Insert a review...</string>
+    <string name="review_hint">Insert a review…</string>
     <string name="save">Save</string>
+    <string name="add_photo">Add Photo</string>
 
     <!-- Delete dialog -->
     <string name="delete_dialog_title">Delete</string>
@@ -25,13 +29,17 @@
     <string name="delete_dialog_btn_cancel">CANCEL</string>
 
     <!-- Toasts -->
-    <string name="saving_error">An error occured while saving</string>
-    <string name="saving_error_img">An error occured while saving the image</string>
+    <string name="saving_error">An error occurred while saving</string>
+    <string name="saving_error_img">An error occurred while saving the image</string>
     <string name="saving_empty_field">Title, author or vote cannot be empty</string>
     <string name="login_success">Logged in successfully</string>
     <string name="login_error">Email or password are wrong</string>
+    <string name="registration_success">Registered and logged in!</string>
+    <string name="registration_error">Something went wrong</string>
+    <string name="erorr_user">Cannot find the logged user</string>
+    <string name="fill_login_fields">Please fill email and password fields</string>
     <string name="delete_success">Deleted successfully</string>
-    <string name="delete_error">An error occured while deleting</string>
+    <string name="delete_error">An error occurred while deleting</string>
 
     <!-- Months -->
     <string name="jan">JAN</string>

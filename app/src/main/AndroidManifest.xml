@@ -9,11 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ReadBooks">
+        <activity android:name=".registration.RegistrationActivity"/>
         <activity
             android:name=".login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -21,13 +23,12 @@
             android:name=".bookForm.BookForm"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.IMAGE_CAPTURE"/>
+                <action android:name="android.intent.action.IMAGE_CAPTURE" />
             </intent-filter>
         </activity>
         <activity
             android:name=".booksList.BooksListActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>

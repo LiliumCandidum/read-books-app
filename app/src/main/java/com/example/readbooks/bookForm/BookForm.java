@@ -6,10 +6,8 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -25,17 +23,12 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.readbooks.R;
 import com.example.readbooks.models.Book;
 import com.example.readbooks.models.DatabaseActivity;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -96,7 +89,7 @@ public class BookForm extends DatabaseActivity {
     private void fillFields() {
         getPicture(book.getKey());
 
-        formTitle.setText(getString(R.string.edit_form) + " " + book.getTitle());
+        formTitle.setText(getString(R.string.edit_form, book.getTitle()));
         titleField.setText(book.getTitle());
         authorField.setText(book.getAuthor());
         reviewField.setText(book.getReview());
@@ -144,7 +137,6 @@ public class BookForm extends DatabaseActivity {
 
     private void initDatePickerDialog() {
         DatePickerDialog.OnDateSetListener dateSetListener = (DatePicker datePicker, int year, int month, int day) -> {
-            Log.i("DatePicker", "DAY SELECTED d " + day + " m " + month + " y " + year);
             String date = makeDateString(day, month, year);
             if(datePickerClicked.equals("start")) {
                 dateStartPickerButton.setText(date);
@@ -187,12 +179,7 @@ public class BookForm extends DatabaseActivity {
         byte[] data = baos.toByteArray();
 
         UploadTask uploadTask = imgRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                openErrorToast(R.string.saving_error);
-            }
-        }).addOnSuccessListener((UploadTask.TaskSnapshot taskSnapshot) -> {
+        uploadTask.addOnFailureListener(exception -> openErrorToast(R.string.saving_error)).addOnSuccessListener((UploadTask.TaskSnapshot taskSnapshot) -> {
             // TODO close the loading modal
             BookForm.super.onBackPressed();
         });

@@ -1,34 +1,24 @@
 package com.example.readbooks.booksList;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.readbooks.R;
 import com.example.readbooks.bookForm.BookForm;
-import com.example.readbooks.login.LoginActivity;
 import com.example.readbooks.models.Book;
 import com.example.readbooks.models.DatabaseActivity;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 
@@ -36,7 +26,6 @@ import java.util.ArrayList;
 
 public class BooksListActivity extends DatabaseActivity {
     private ListView listView;
-
 
     MyListAdapter adapter;
 
@@ -97,7 +86,6 @@ public class BooksListActivity extends DatabaseActivity {
 
                 toastTextId = R.string.delete_success;
             }
-
             Toast.makeText(BooksListActivity.this, getString(toastTextId), Toast.LENGTH_LONG).show();
         });
     }
@@ -128,13 +116,7 @@ public class BooksListActivity extends DatabaseActivity {
             } else if(Integer.parseInt(date2Splitted[1]) < Integer.parseInt(date1Splitted[1])) {
                 return -1;
             } else {
-                if(Integer.parseInt(date2Splitted[0]) > Integer.parseInt(date1Splitted[0])) {
-                    return 1;
-                } else if(Integer.parseInt(date2Splitted[0]) < Integer.parseInt(date1Splitted[0])) {
-                    return -1;
-                } else {
-                    return 0;
-                }
+                return Integer.compare(Integer.parseInt(date2Splitted[0]), Integer.parseInt(date1Splitted[0]));
             }
         }
     }
